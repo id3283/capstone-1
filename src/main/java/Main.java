@@ -16,9 +16,6 @@ public class Main {
         String fileName = "src/main/resources/transactions.csv";
         loadTransactions(fileName);
 
-//        for (Transaction transaction: transactions) {
-//            System.out.println(transaction.toString());
-//        }
 //        mainMenu();
     }
 
@@ -26,6 +23,7 @@ public class Main {
      * Reads a CSV file into an ArrayList of Transaction objects.
      */
     private static void loadTransactions(String fileName) {
+        transactions = new ArrayList<Transaction>();
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader reader = new BufferedReader(fileReader);

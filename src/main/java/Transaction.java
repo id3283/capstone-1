@@ -29,7 +29,7 @@ public class Transaction {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public String getVendor() {
@@ -38,5 +38,10 @@ public class Transaction {
 
     public double getAmount() {
         return amount;
+    }
+
+    public String toString() {
+        String s = this.getDateTime() + " " + this.description + " " + this.vendor + " " + this.amount;
+        return s;
     }
 }
