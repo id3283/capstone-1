@@ -11,10 +11,10 @@ import java.util.Scanner;
 public class Main {
     static ArrayList<Transaction> transactions;
     static Scanner scanner = new Scanner(System.in);
-    static String fileName = "src/main/resources/transactions.csv";
 
     public static void main(String[] args) {
-        loadTransactions();
+        String fileName = "src/main/resources/transactions.csv";
+        loadTransactions(fileName);
 
 //        for (Transaction transaction: transactions) {
 //            System.out.println(transaction.toString());
@@ -24,10 +24,8 @@ public class Main {
 
     /**
      * Reads a CSV file into an ArrayList of Transaction objects.
-     * @param s The file name.
-     * @return
      */
-    private static void loadTransactions() {
+    private static void loadTransactions(String fileName) {
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader reader = new BufferedReader(fileReader);
