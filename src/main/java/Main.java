@@ -16,8 +16,6 @@ public class Main {
         String fileName = "src/main/resources/transactions.csv";
         loadTransactions(fileName);
         mainMenu();
-
-        printAllTransactions();
     }
 
     /**
@@ -113,10 +111,10 @@ public class Main {
         if(transactionDateTime.isAfter(now)) {
             System.out.println("Yo!  You can't enter stuff from the future!");
         }
-        // TODO: How do i prevent this from being added?
-
-        Transaction t = new Transaction(date, time, description, vendor, amount);
-        transactions.add(t);
+        else {
+            Transaction t = new Transaction(date, time, description, vendor, amount);
+            transactions.add(t);
+        }
     }
 
     private static void addPayment() {
@@ -199,7 +197,6 @@ public class Main {
                 case "3":
                     printYtd();
                     break;
-
                 case "0":
                     System.out.println("Returning to Ledger Menu...");
                     break;
@@ -263,5 +260,3 @@ public class Main {
     }
 
 }
-
-
