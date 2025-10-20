@@ -108,6 +108,13 @@ public class Main {
         System.out.println("Enter deposit amount");
         double amount = Double.parseDouble(scanner.nextLine());
 
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime transactionDateTime = date.atTime(time);
+        if(transactionDateTime.isAfter(now)) {
+            System.out.println("Yo!  You can't enter stuff from the future!");
+        }
+        // TODO: How do i prevent this from being added?
+
         Transaction t = new Transaction(date, time, description, vendor, amount);
         transactions.add(t);
     }
@@ -171,8 +178,66 @@ public class Main {
     }
 
     private static void reportsMenu() {
-        // TODO: don't forget to fill out this method
-        System.out.println("Yo!  I don't do anything");
+        String userInput;
+        do {
+            String prompt = """
+                    1) Print month to date transactions
+                    2) Print out transactions for previous month
+                    3) Print out YTD transactions
+                    """;
+            System.out.println(prompt);
+            userInput = scanner.nextLine();
+
+            // get input
+            switch (userInput) {
+                case "1":
+                    printMonthToDate();
+                    break;
+                case "2":
+                    printPreviousMonth();
+                    break;
+                case "3":
+                    printYtd();
+                    break;
+
+                case "0":
+                    System.out.println("Returning to Ledger Menu...");
+                    break;
+                default:
+                    System.out.println("bad input");
+            }
+        } while( !userInput.equals("H"));
+    }
+
+    private static void printYtd() {
+        LocalDate today = LocalDate.now();
+
+        for(Transaction t: transactions) {
+            if(today.getYear() == t.getDateTime().getYear()) {
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    private static void printPreviousMonth() {
+        LocalDate today = LocalDate.now();
+        LocalDate lastMonth = today.minusMonths(1);
+        for(Transaction t: transactions) {
+            if(lastMonth.getMonth() == t.getDateTime().getMonth() && lastMonth.getYear() == t.getDateTime().getYear()) {
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    private static void printMonthToDate() {
+        LocalDate today = LocalDate.now();
+        for(Transaction t: transactions) {
+            LocalDateTime transactionDateTime = t.getDateTime();
+            int transactionYear = transactionDateTime.getYear();
+            if((today.getYear() == transactionYear) && (today.getMonth() == t.getDateTime().getMonth())) {
+                System.out.println(t.toString());
+            }
+        }
     }
 
     private static void printAllTransactions() {
@@ -196,6 +261,7 @@ public class Main {
             }
         }
     }
+
 }
 
 
