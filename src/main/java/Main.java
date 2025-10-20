@@ -15,8 +15,9 @@ public class Main {
     public static void main(String[] args) {
         String fileName = "src/main/resources/transactions.csv";
         loadTransactions(fileName);
+        mainMenu();
 
-//        mainMenu();
+        printAllTransactions();
     }
 
     /**
@@ -59,16 +60,29 @@ public class Main {
     }
 
     private static void mainMenu() {
-        String userInput = Main.scanner.nextLine();
+        String userInput;
         do {
-            System.out.println("1, 2, 3");
+            String prompt = """
+                    D) Add Deposit
+                    P) Make Payment (Debit)
+                    L) Ledger - display the ledger screen
+                    X) Exit - exit the application""";
+            System.out.println(prompt);
+            userInput = scanner.nextLine();
+
             // get input
             switch (userInput) {
+                case "D":
+                    addDeposit();
+                    break;
+                case "P":
+                    addPayment();
+                    break;
                 case "L":
                     ledgerMenu();
                     break;
-                case "A":
-                    printAllTransactions();
+                case "X":
+                    System.out.println("Goodbye!");
                     break;
                 default:
                     System.out.println("bad input");
@@ -76,15 +90,112 @@ public class Main {
         } while( !userInput.equals("X"));
     }
 
-    private static void ledgerMenu() {
+    private static void addDeposit() {
+        System.out.println("Enter deposit date:");
+        String userInput = scanner.nextLine();
+        LocalDate date = LocalDate.parse(userInput);
 
+        System.out.println("Enter deposit time:");
+        userInput = scanner.nextLine();
+        LocalTime time = LocalTime.parse(userInput);
+
+        System.out.println("Enter deposit description");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter deposit vendor");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Enter deposit amount");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+        Transaction t = new Transaction(date, time, description, vendor, amount);
+        transactions.add(t);
+    }
+
+    private static void addPayment() {
+        System.out.println("Enter payment date:");
+        String userInput = scanner.nextLine();
+        LocalDate date = LocalDate.parse(userInput);
+
+        System.out.println("Enter payment time:");
+        userInput = scanner.nextLine();
+        LocalTime time = LocalTime.parse(userInput);
+
+        System.out.println("Enter payment description");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter payment vendor");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Enter payment amount");
+        double amount = Double.parseDouble(scanner.nextLine());
+        amount = amount * -1;
+
+        Transaction t = new Transaction(date, time, description, vendor, amount);
+        transactions.add(t);
+    }
+
+    private static void ledgerMenu() {
+        String userInput;
+        do {
+            String prompt = """
+                    A) Show all transactions
+                    D) Show all deposits
+                    P) Show all payments
+                    R) Reports - display the reports screen
+                    H) Home - exit to main menu""";
+            System.out.println(prompt);
+            userInput = scanner.nextLine();
+
+            // get input
+            switch (userInput) {
+                case "A":
+                    printAllTransactions();
+                    break;
+                case "D":
+                    printAllDeposits();
+                    break;
+                case "P":
+                    printAllPayments();
+                    break;
+                case "R":
+                    reportsMenu();
+                    break;
+                case "H":
+                    System.out.println("Returning to Main Menu...");
+                    break;
+                default:
+                    System.out.println("bad input");
+            }
+        } while( !userInput.equals("H"));
+    }
+
+    private static void reportsMenu() {
+        // TODO: don't forget to fill out this method
+        System.out.println("Yo!  I don't do anything");
     }
 
     private static void printAllTransactions() {
-
+        for (Transaction t: transactions) {
+            System.out.println(t.toString());
+        }
     }
 
+    private static void printAllDeposits() {
+        for (Transaction t: transactions) {
+            if(t.getAmount() > 0) {
+                System.out.println(t.toString());
+            }
+        }
+    }
 
+    private static void printAllPayments() {
+        for (Transaction t: transactions) {
+            if(t.getAmount() < 0) {
+                System.out.println(t.toString());
+            }
+        }
+    }
 }
 
 
